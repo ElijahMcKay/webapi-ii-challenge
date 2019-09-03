@@ -5,7 +5,7 @@
 - Express Routing
 - Reading Request data from body and URL parameters
 - Sub-routes
-- API design and development.
+- API design and development. 
 
 ## Description
 
