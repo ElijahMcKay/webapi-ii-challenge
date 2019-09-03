@@ -25,9 +25,17 @@ server.get("/api/posts", (req, res) => {
   });
 
 server.get("/api/posts/:id", (req, res) => {
-    posts.find()
+    const ID = req.params.id;
+    console.log(ID);  
+    posts.findById(ID)
       .then(post => {
-        res.status(200).json(post);
+        if(post.length === 0) {
+            return res.status(404).json({
+                message: "This ID doesn't exist"
+            }); 
+        } else {
+            return res.status(200).json(post);
+        }
       })
       .catch(() => {
         res.status(500).json({
@@ -37,11 +45,20 @@ server.get("/api/posts/:id", (req, res) => {
 });
 
 server.get("/api/posts/:id/comments", (req, res) => {
-    posts.find()
-      .then(post => {
-        res.status(200).json(post);
+    const ID = req.params.id
+    console.log(ID)
+    posts.findPostComments(ID)
+      .then(comment => {
+          if(comment.length === 0) {
+              return res.status(404).json({
+                  message: "This comment does not exist"
+              })
+          } else {
+              return res.status(200).json(comment); 
+          }
       })
-      .catch(() => {
+      .catch((err) => {
+        console.log(err); 
         res.status(500).json({
           message: "Cannot access users data"
         });
@@ -65,7 +82,8 @@ server.post('/api/posts', (req, res) => {
 })
 
 server.post('/api/posts/:id/comments', (req, res) => {
-    posts.insert(req.body) 
+
+    posts.insertComment(req.body) 
         .then(post => {
             res.status(201).json(post); 
         })
