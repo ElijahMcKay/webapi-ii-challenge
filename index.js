@@ -13,9 +13,9 @@ server.use(express.json());
 // --- GET Requests ---
 
 server.get("/api/posts", (req, res) => {
-    users.find()
-      .then(users => {
-        res.status(200).json(posts);
+    posts.find()
+      .then(post => {
+        res.status(200).json(post);
       })
       .catch(() => {
         res.status(500).json({
@@ -25,9 +25,9 @@ server.get("/api/posts", (req, res) => {
   });
 
 server.get("/api/posts/:id", (req, res) => {
-    users.find()
-      .then(users => {
-        res.status(200).json(posts);
+    posts.find()
+      .then(post => {
+        res.status(200).json(post);
       })
       .catch(() => {
         res.status(500).json({
@@ -37,9 +37,9 @@ server.get("/api/posts/:id", (req, res) => {
 });
 
 server.get("/api/posts/:id/comments", (req, res) => {
-    users.find()
-      .then(users => {
-        res.status(200).json(posts);
+    posts.find()
+      .then(post => {
+        res.status(200).json(post);
       })
       .catch(() => {
         res.status(500).json({
@@ -53,9 +53,9 @@ server.get("/api/posts/:id/comments", (req, res) => {
   // ----- POST Requests -----
 server.post('/api/posts', (req, res) => {
     
-    users.insert(req.body) 
-        .then(user => {
-            res.status(201).json(posts); 
+    posts.insert(req.body) 
+        .then(post => {
+            res.status(201).json(post); 
         })
         .catch(err => {
             res.status(500).json({
@@ -65,23 +65,23 @@ server.post('/api/posts', (req, res) => {
 })
 
 server.post('/api/posts/:id/comments', (req, res) => {
-    users.insert(req.body) 
-        .then(user => {
-            res.status(201).json(posts); 
+    posts.insert(req.body) 
+        .then(post => {
+            res.status(201).json(post); 
         })
         .catch(err => {
             res.status(500).json({
-                message: "Failed to add new user"
+                message: "Failed to add new comment"
             }); 
         })
 })
 
 
 // ---- PUT Requests ----
-server.put('/api/users/:id', (req, res) => {
-    users.update(req.params.id, req.body)
-        .then(user => {
-            res.status(201).json(posts); 
+server.put('/api/posts/:id', (req, res) => {
+    posts.update(req.params.id, req.body)
+        .then(post => {
+            res.status(201).json(post); 
         })
         .catch(err => {
             res.status(500).json({
@@ -92,5 +92,16 @@ server.put('/api/users/:id', (req, res) => {
 }) 
 
 
-// 
+// ---- DELETE Request ----
+server.delete('/api/posts/:id', (req, res) => {
+    const id = req.params.id
+    posts.remove(id)
+        .then(post => {
+            res.status(410).json(post); 
+        })
+        .catch(err => console.log(err)); 
+})
+
+
+server.listen(6000, () => console.log('API is running on port 6000!'))
 
